@@ -5,23 +5,23 @@ BootLoader:
 	@echo ==================== Build BootLoader========================
 	@echo
 
-	make -C 00.BootLoader
+	make -C kude.BootLoader
 
 	@echo
 	@echo ==================== Build Complete========================
 	@echo
 
-Disk.img:00.BootLoader/bootLoader.bin
+Disk.img:kude.BootLoader/bootLoader.bin
 	@echo
 	@echo ==================== Disk Image Build ========================
 	@echo
 
-	cp 00.BootLoader/bootLoader.bin Disk.img
+	cp kude.BootLoader/bootLoader.bin Disk.img
  
 	@echo
 	@echo ==================== All Build ========================
 	@echo
 
 clean:
-	make -C 00.BootLoader clean
+	make -C kude.BootLoader clean
 	rm -f Disk.img
