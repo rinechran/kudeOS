@@ -20,6 +20,14 @@ START:
     cmp si,80*25*2
     jl  .SCREENCLEARLOOP
 
+mov si,0
+mov di,0
+
+
+
+.BOOT_MESSAGE_STRING: db 'KUDE OS HELLO WORLD',0
+
+
 jmp $
 
 times 510 - ( $ - $$ ) db 0x00
