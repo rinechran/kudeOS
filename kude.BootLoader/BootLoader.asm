@@ -37,14 +37,15 @@ SCREEN_CLEAR_LOOP:
 push BOOT_MESSAGE_STRING
 push 1
 push 0
-call FUNPRINT_MESSAGE
+call FUNC_PRINT_MESSAGE
 add sp,6
+
 
 jmp $
 ;; bp + 4 x
 ;; bp + 6 y
 ;; bp + 8 show_string 
-FUNPRINT_MESSAGE:
+FUNC_PRINT_MESSAGE:
     push bp
     mov bp,sp
 
