@@ -67,8 +67,8 @@ INIT_DSIK:
     mov es,si  
     mov bx,0x0000
     mov di, word [SECTOR_TOTAL_COUNT]
-
-READ_DISK_FUNC;
+ 
+READ_DISK_FUNC:
     cmp di,0
     je READ_END_FUNC
     sub di,0x01
@@ -82,10 +82,12 @@ READ_DISK_FUNC;
     int 0x13 ; disk io service interrupt 0x13
     jc BOOT_ERROR_FUNC
 
-    add si,0x0200 ; 1 sctor size 0x200 size
+    add si,0x0020 ; 1 sctor size 0x200 size
     mov es,si
 
-    add byte[DISK_SECTOR_INDEX],0x01 ;; al sctor index ++
+    mov al,byte[DISK_SECTOR_INDEX]
+    add al,0x01
+    mov byte[DISK_SECTOR_INDEX],al ;; al sctor index ++
     cmp al,19
     jl READ_DISK_FUNC
 
@@ -95,24 +97,23 @@ READ_DISK_FUNC;
 
     cmp byte[DISK_HEAD_INDEX],0x00
     jne READ_DISK_FUNC
+
     add byte [ DISK_TRACK_INDEX ] , 0x01 ; track number ++
     jmp READ_DISK_FUNC
 
+
 READ_END_FUNC:
-    push BOOT_LOADING_STRING
+    push BOOT_COMPLETE_STRING
     push 1
-    push 20
+    push 0
     call PRINT_MESSAGE_FUNC
     add sp,6
     jmp 0x1000:0x0000          
 
     
 
-
-
-
 BOOT_ERROR_FUNC:
-    push BOOT_COMPLETE_STRING
+    push BOOT_DISK_ERROR_STRING
     push 10
     push 0
     call PRINT_MESSAGE_FUNC
@@ -185,7 +186,7 @@ PRINT_MESSAGE_FUNC:
 BOOT_DISK_ERROR_STRING : db 'DISK ERROR',0
 BOOT_MESSAGE_STRING: db 'KUDE OS HELLO WORLD',0
 BOOT_LOADING_STRING : db 'OS IMAGE LOADING ......',0
-BOOT_COMPLETE_STRING : db 'OS LOADING COMPLETE ',0
+BOOT_COMPLETE_STRING : db 'OS IMAGE LOADING COMPLETE ',0
 
 
 jmp $
